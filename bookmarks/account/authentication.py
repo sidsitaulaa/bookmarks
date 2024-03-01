@@ -1,8 +1,12 @@
 from django.contrib.auth.models import User
+from account.models import Profile
 
+def create_profile(backend,user,*args,**kwargs):
+    Profile.objects.get_or_create(user=user)
+    
 class EmailAuthBackend:
+        
     def authenticate(self,request,username=None,password=None):
-        print('Hiiiiiiiiiiiiiiii')
         try:
             user = User.objects.get(email=username)
             if user.check_password(password):
