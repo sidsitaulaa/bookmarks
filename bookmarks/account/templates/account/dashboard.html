@@ -2,6 +2,23 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+<script>
+
+    function invokeBook(){
+        if(!window.bookmarlet){
+            bookmarlet_js=document.body.appendChild(document.createElement('script'));
+            bookmarlet_js.script = '//127.0.0.1:8000/static/js/bookmarklet.js?r='+Math.floor(Math.random()*9999999999999999);
+            console.log(bookmarlet_js.script)
+            window.bookmarlet = true;
+        }else{
+            bookmarklet();
+        }
+    }
+</script>
 <h1>Dashboard</h1>
-<p>Welcome to your dashboard. You can <a href="{% url "edit" %}">Edit your profile</a> or <a href="{% url "password_change" %}">change your password</a></p>
+{% with total_images_created=request.user.images_created.count %}
+<p>Welcome to your dashboard. You have bookmarked {{ total_images_created }} image{{ total_images_created|pluralize }}.</p>
+{% endwith %}
+<p>Drag the following button to your bookmarks toolbar to bookmark images from other websites -> <a href='javascript:{% include "bookmarklet_launcher.js" %}' class="button">Bookmark it</a></p>
+<p>You can also <a href="{% url "edit" %}">Edit your profile</a> or <a  href="{% url "password_change" %}">change your password</a></p>
 {% endblock %}
